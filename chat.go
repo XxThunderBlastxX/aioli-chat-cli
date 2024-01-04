@@ -5,16 +5,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/fatih/color"
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"log"
 	"os"
 )
-
-var meColor = color.New(color.FgYellow)
-var aioliColor = color.New(color.FgHiBlue)
 
 func chatWithAioli() {
 	ctx := context.Background()
