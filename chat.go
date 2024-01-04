@@ -33,12 +33,12 @@ func chatWithAioli() {
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 
-		meColor.Print("Me > ")
+		meColor.Print("😃 Me > ")
 		scanner.Scan()
 
 		iter := chat.SendMessageStream(ctx, genai.Text(scanner.Text()))
 
-		aioliColor.Print("Aioli > ")
+		aioliColor.Print("🤖 Aioli > ")
 		for {
 			resp, err := iter.Next()
 			if errors.Is(err, iterator.Done) {
@@ -48,10 +48,9 @@ func chatWithAioli() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			aioliColor.Print(resp.Candidates[0].Content.Parts[0])
+			fmt.Print(resp.Candidates[0].Content.Parts[0])
 
 		}
 		fmt.Print("\n")
-
 	}
 }
