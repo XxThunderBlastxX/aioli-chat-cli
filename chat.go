@@ -13,6 +13,9 @@ import (
 	"os"
 )
 
+var meColor = color.New(color.FgYellow)
+var aioliColor = color.New(color.FgHiBlue)
+
 func chatWithAioli() {
 	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("GEN_API_KEY")))
@@ -32,11 +35,12 @@ func chatWithAioli() {
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 
-		fmt.Println("Enter message: ")
+		meColor.Print("Me > ")
 		scanner.Scan()
 
 		iter := chat.SendMessageStream(ctx, genai.Text(scanner.Text()))
 
+		aioliColor.Print("Aioli > ")
 		for {
 			resp, err := iter.Next()
 			if errors.Is(err, iterator.Done) {
@@ -46,10 +50,10 @@ func chatWithAioli() {
 			if err != nil {
 				log.Fatal(err)
 			}
-
-			fmt.Println(resp.Candidates[0].Content)
+			aioliColor.Print(resp.Candidates[0].Content.Parts[0])
 
 		}
+		fmt.Print("\n")
 
 	}
 }
