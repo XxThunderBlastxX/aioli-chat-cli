@@ -3,6 +3,9 @@
 .idea
 .vscode
 
+# macos
+.DS_Store
+
 
 
 
