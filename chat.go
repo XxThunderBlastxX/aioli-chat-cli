@@ -18,7 +18,13 @@ func chatWithAioli() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer client.Close()
+
+	defer func(client *genai.Client) {
+		err := client.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(client)
 
 	aioli := client.GenerativeModel("gemini-pro")
 
@@ -29,12 +35,12 @@ func chatWithAioli() {
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 
-		meColor.Print("😃 Me > ")
+		_, _ = meColor.Print("😃 Me > ")
 		scanner.Scan()
 
 		iter := chat.SendMessageStream(ctx, genai.Text(scanner.Text()))
 
-		aioliColor.Print("🤖 Aioli > ")
+		_, _ = aioliColor.Print("🤖 Aioli > ")
 		for {
 			resp, err := iter.Next()
 			if errors.Is(err, iterator.Done) {
