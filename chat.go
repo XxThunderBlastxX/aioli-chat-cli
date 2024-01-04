@@ -3,17 +3,15 @@ package main
 import (
 	"bufio"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/google/generative-ai-go/genai"
+	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 	"log"
 	"os"
 )
-
-//func initAioli(ctx context.Context) *genai.GenerativeModel {
-//
-//	return model
-//}
 
 func chatWithAioli() {
 	ctx := context.Background()
@@ -29,24 +27,29 @@ func chatWithAioli() {
 
 	chat.History = []*genai.Content{}
 
-	for {
+	color.Cyan("Chat with your own AI Friend **Aioli**!")
 
-		//var msg string
+	for {
 		scanner := bufio.NewScanner(os.Stdin)
 
 		fmt.Println("Enter message: ")
 		scanner.Scan()
-		//msg = scanner.Text()
 
-		if scanner.Text() == "0" {
-			break
+		iter := chat.SendMessageStream(ctx, genai.Text(scanner.Text()))
+
+		for {
+			resp, err := iter.Next()
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Println(resp.Candidates[0].Content)
+
 		}
 
-		resp, err := chat.SendMessage(ctx, genai.Text(scanner.Text()))
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println(resp.Candidates[0].Content)
 	}
 }
