@@ -17,7 +17,6 @@ func main() {
 		Usage:                "Chat with your own AI Friend **Aioli**",
 		EnableBashCompletion: true,
 		Action: func(*cli.Context) error {
-
 			chatWithAioli()
 			return nil
 		},
