@@ -30,8 +30,6 @@ func chatWithAioli() {
 
 	chat.History = []*genai.Content{}
 
-	color.Cyan("Chat with your own AI Friend **Aioli**!")
-
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 
